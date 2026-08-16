@@ -2,58 +2,101 @@
 
 (function () {
   const $ = (id) => document.getElementById(id);
-  const timeEl = $("time");
+  const hoursEl = $("hours");
+  const minutesEl = $("minutes");
+  const secondsEl = $("seconds");
+  const ampmEl = $("ampm");
   const dateEl = $("date");
   const dayEl = $("day");
+
   const controls = $("controls");
   const btnFullscreen = $("btn-fullscreen");
   const btnFormat = $("btn-format");
+  const btnColor = $("btn-color");
 
-  const STORAGE_KEY = "clock-format";
-  const dayFormatter = new Intl.DateTimeFormat("ko-KR", { weekday: "long" });
-  const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const STORAGE_FORMAT = "clock-format-mode";
+  const STORAGE_COLOR = "clock-color-index";
 
-  let is24h = true;
+  const COLOR_THEMES = [
+    { name: "Blue", main: "#3b82f6", glow: "rgba(59, 130, 246, 0.35)", bg: "rgba(59, 130, 246, 0.08)" },
+    { name: "Cyan", main: "#00e5ff", glow: "rgba(0, 229, 255, 0.35)", bg: "rgba(0, 229, 255, 0.08)" },
+    { name: "Green", main: "#00e676", glow: "rgba(0, 230, 118, 0.35)", bg: "rgba(0, 230, 118, 0.08)" },
+    { name: "Amber", main: "#ffab00", glow: "rgba(255, 171, 0, 0.35)", bg: "rgba(255, 171, 0, 0.08)" },
+    { name: "Red", main: "#ff1744", glow: "rgba(255, 23, 68, 0.35)", bg: "rgba(255, 23, 68, 0.08)" },
+    { name: "White", main: "#ffffff", glow: "rgba(255, 255, 255, 0.35)", bg: "rgba(255, 255, 255, 0.08)" },
+  ];
+
+  const DAY_NAMES = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+
+  let is24h = false; // 기본 12시간 모드 (이미지와 동일)
+  let colorIndex = 0; // 기본 일렉트릭 블루 (이미지와 동일)
+
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === "12") is24h = false;
-  } catch (e) {
-    /* localStorage unavailable — keep default */
-  }
+    const savedFormat = localStorage.getItem(STORAGE_FORMAT);
+    if (savedFormat === "24") is24h = true;
 
-  /* ---- 시간 표시 ---- */
-  function formatTime(d) {
-    let h = d.getHours();
-    if (!is24h) {
-      h = h % 12 || 12;
+    const savedColor = localStorage.getItem(STORAGE_COLOR);
+    if (savedColor !== null) {
+      const idx = parseInt(savedColor, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < COLOR_THEMES.length) {
+        colorIndex = idx;
+      }
     }
-    const m = String(d.getMinutes()).padStart(2, "0");
-    return h + ":" + m;
+  } catch (e) {
+    /* localStorage 사용 불가 시 기본값 유지 */
   }
 
+  /* ---- 색상 적용 ---- */
+  function applyColorTheme() {
+    const theme = COLOR_THEMES[colorIndex];
+    document.documentElement.style.setProperty("--accent-color", theme.main);
+    document.documentElement.style.setProperty("--accent-glow", theme.glow);
+    document.documentElement.style.setProperty("--digit-bg-color", theme.bg);
+  }
+
+  /* ---- 시간 및 날짜 표시 ---- */
   function render() {
     const now = new Date();
-    timeEl.textContent = formatTime(now);
-    dayEl.textContent = dayFormatter.format(now);
-    dateEl.textContent = dateFormatter.format(now);
+    const rawHours = now.getHours();
+
+    let displayHours;
+    if (is24h) {
+      displayHours = String(rawHours).padStart(2, "0");
+      ampmEl.textContent = "";
+      ampmEl.style.display = "none";
+    } else {
+      let h12 = rawHours % 12 || 12;
+      displayHours = String(h12);
+      ampmEl.textContent = rawHours >= 12 ? "PM" : "AM";
+      ampmEl.style.display = "inline-block";
+    }
+
+    hoursEl.textContent = displayHours;
+    minutesEl.textContent = String(now.getMinutes()).padStart(2, "0");
+    secondsEl.textContent = String(now.getSeconds()).padStart(2, "0");
+
+    // 날짜: "8월 16, 2026"
+    const month = now.getMonth() + 1;
+    const date = now.getDate();
+    const year = now.getFullYear();
+    dateEl.textContent = `${month}월 ${date}, ${year}`;
+
+    // 요일: "일요일"
+    dayEl.textContent = DAY_NAMES[now.getDay()];
   }
 
-  // 초가 0이 되는 정각에 동기화하여 1초마다 갱신
+  /* ---- 초 및 정각 스케줄링 ---- */
   function schedule() {
     render();
     const now = new Date();
-    const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    const msToNextSecond = 1000 - now.getMilliseconds();
     setTimeout(function tick() {
       render();
       setTimeout(tick, 1000);
-    }, msToNextMinute);
+    }, msToNextSecond);
   }
 
-  /* ---- 12/24시간 토글 ---- */
+  /* ---- 12h / 24h 토글 ---- */
   function applyFormatButton() {
     btnFormat.textContent = is24h ? "12h" : "24h";
   }
@@ -63,10 +106,17 @@
     applyFormatButton();
     render();
     try {
-      localStorage.setItem(STORAGE_KEY, is24h ? "24" : "12");
-    } catch (e) {
-      /* ignore */
-    }
+      localStorage.setItem(STORAGE_FORMAT, is24h ? "24" : "12");
+    } catch (e) {}
+  });
+
+  /* ---- 색상 변경 ---- */
+  btnColor.addEventListener("click", function () {
+    colorIndex = (colorIndex + 1) % COLOR_THEMES.length;
+    applyColorTheme();
+    try {
+      localStorage.setItem(STORAGE_COLOR, String(colorIndex));
+    } catch (e) {}
   });
 
   /* ---- 전체 화면 ---- */
@@ -81,14 +131,12 @@
 
   btnFullscreen.addEventListener("click", toggleFullscreen);
 
-  // iOS Safari: requestFullscreen 미지원 → standalone 모드에서 자동으로 주소창 숨김.
-  // 화면 탭 시 전체화면/브라우저 모두 동작하도록 지원 여부 무시하고 시도.
   document.addEventListener("click", function (e) {
     if (controls.contains(e.target)) return;
     toggleFullscreen();
   });
 
-  /* ---- 컨트롤 자동 숨김 ---- */
+  /* ---- 컨트롤 자동 숨김 (3초) ---- */
   let hideTimer = null;
   function showControls() {
     controls.classList.add("visible");
@@ -99,6 +147,7 @@
       controls.setAttribute("aria-hidden", "true");
     }, 3000);
   }
+
   controls.addEventListener("click", function (e) {
     e.stopPropagation();
     showControls();
@@ -106,27 +155,26 @@
   document.addEventListener("touchstart", showControls, { passive: true });
   document.addEventListener("mousemove", showControls);
 
-  /* ---- Wake Lock (화면 안 꺼짐, 지원 시) ---- */
+  /* ---- Wake Lock (화면 안 꺼짐 유지) ---- */
   let wakeLock = null;
   if ("wakeLock" in navigator) {
-    async function acquire() {
+    async function acquireWakeLock() {
       try {
         wakeLock = await navigator.wakeLock.request("screen");
-      } catch (e) {
-        /* ignore */
-      }
+      } catch (e) {}
     }
-    acquire();
+    acquireWakeLock();
     document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState === "visible" && !wakeLock) acquire();
+      if (document.visibilityState === "visible" && !wakeLock) acquireWakeLock();
     });
   }
 
-  /* ---- 시작 ---- */
+  /* ---- 초기화 ---- */
+  applyColorTheme();
   applyFormatButton();
   schedule();
 
-  // 서비스 워커 등록 (PWA)
+  /* ---- 서비스 워커 등록 ---- */
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(function () {});
   }

@@ -3,22 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#0d0d0f">
+  <meta name="theme-color" content="#000000">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="시계">
-  <meta name="description" content="큰 글씨 스마트폰 시계 — 시간, 요일, 날짜">
+  <meta name="description" content="7세그먼트 디지털 큰 글씨 스마트폰 시계">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <title>큰 글씨 시계</title>
+  <title>큰 글씨 디지털 시계</title>
+
+  <!-- 7세그먼트 및 디지털 폰트 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dseg@0.4.6/css/dseg.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main id="clock" class="clock">
-    <div id="time" class="time" aria-live="polite">--:--</div>
-    <div id="date" class="date"></div>
-    <div id="day" class="day"></div>
+    <!-- 시 (Hours) -->
+    <div class="digit-box hours-box">
+      <span class="digit-bg" aria-hidden="true">88</span>
+      <span id="hours" class="digit-fg">4</span>
+    </div>
+
+    <!-- 분 (Minutes) -->
+    <div class="digit-box minutes-box">
+      <span class="digit-bg" aria-hidden="true">88</span>
+      <span id="minutes" class="digit-fg">30</span>
+    </div>
+
+    <!-- 초 & AM/PM (Seconds & AM/PM) -->
+    <div class="sec-ampm-row">
+      <div class="digit-box seconds-box">
+        <span class="digit-bg" aria-hidden="true">88</span>
+        <span id="seconds" class="digit-fg">38</span>
+      </div>
+      <span id="ampm" class="ampm">PM</span>
+    </div>
+
+    <!-- 날짜 (Date) -->
+    <div id="date" class="date">8월 16, 2026</div>
+
+    <!-- 요일 (Day of Week) -->
+    <div id="day" class="day">일요일</div>
   </main>
 
   <div id="controls" class="controls" aria-hidden="true">
@@ -28,7 +58,8 @@
         <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
       </svg>
     </button>
-    <button id="btn-format" class="ctrl-btn" type="button" aria-label="12/24시간 전환">24h</button>
+    <button id="btn-format" class="ctrl-btn" type="button" aria-label="12/24시간 전환">12h</button>
+    <button id="btn-color" class="ctrl-btn" type="button" aria-label="색상 변경">🎨</button>
   </div>
 
   <script src="app.js"></script>
