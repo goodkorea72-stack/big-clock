@@ -5,7 +5,6 @@
   const hoursEl = $("hours");
   const minutesEl = $("minutes");
   const secondsEl = $("seconds");
-  const ampmEl = $("ampm");
   const dateEl = $("date");
   const dayEl = $("day");
 
@@ -59,13 +58,9 @@
     let displayHours;
     if (is24h) {
       displayHours = String(rawHours).padStart(2, "0");
-      ampmEl.textContent = "";
-      ampmEl.style.display = "none";
     } else {
       let h12 = rawHours % 12 || 12;
       displayHours = String(h12);
-      ampmEl.textContent = rawHours >= 12 ? "PM" : "AM";
-      ampmEl.style.display = "inline-block";
     }
 
     hoursEl.textContent = displayHours;

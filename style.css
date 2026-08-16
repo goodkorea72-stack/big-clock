@@ -35,10 +35,10 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: calc(env(safe-area-inset-top, 0px) + 0.8rem)
-    calc(env(safe-area-inset-right, 0px) + 0.8rem)
-    calc(env(safe-area-inset-bottom, 0px) + 0.8rem)
-    calc(env(safe-area-inset-left, 0px) + 0.8rem);
+  padding: calc(env(safe-area-inset-top, 0px) + 0.5rem)
+    calc(env(safe-area-inset-right, 0px) + 0.5rem)
+    calc(env(safe-area-inset-bottom, 0px) + 0.5rem)
+    calc(env(safe-area-inset-left, 0px) + 0.5rem);
   text-align: center;
   position: relative;
   background: var(--bg);
@@ -55,46 +55,29 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* 시간 / 분 크기 */
+/* 시간 / 분 크기 (원래대로 최대 대형) */
 .hours,
 .minutes {
-  font-size: clamp(5.5rem, 28vw, 17.5rem);
+  font-size: clamp(6.5rem, 34vw, 24rem);
   margin-bottom: 0.1rem;
 }
 
-/* 초 & AM/PM 행 */
-.sec-ampm-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  margin-top: 0.8rem;
-  margin-bottom: 0.8rem;
-}
-
+/* 초 크기 */
 .seconds {
   font-size: clamp(2.4rem, 11vw, 5.5rem);
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 
-.ampm {
-  font-size: clamp(2.2rem, 10vw, 5rem);
-  font-family: 'Share Tech Mono', 'Orbitron', 'DSEG7-Classic', monospace;
-  font-weight: 700;
-  color: var(--accent-color);
-  text-shadow: 0 0 14px var(--accent-glow);
-  letter-spacing: 0.05em;
-  line-height: 1;
-}
-
-/* ---- 날짜 & 요일 (초시계급 대형 사이즈) ---- */
+/* ---- 날짜 & 요일 (초시계급 대형 사이즈 유지) ---- */
 .date {
   font-size: clamp(2.2rem, 8.5vw, 5.2rem);
   font-family: 'Share Tech Mono', 'Orbitron', 'Noto Sans KR', sans-serif;
   font-weight: 700;
   color: var(--accent-color);
   letter-spacing: 0.04em;
-  margin-top: 0.6rem;
-  margin-bottom: 0.4rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.3rem;
   text-shadow: 0 0 14px var(--accent-glow);
   white-space: nowrap;
 }
