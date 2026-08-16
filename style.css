@@ -1,8 +1,7 @@
 :root {
   --bg: #000000;
   --accent-color: #3b82f6;
-  --accent-glow: rgba(59, 130, 246, 0.35);
-  --digit-bg-color: rgba(59, 130, 246, 0.08);
+  --accent-glow: rgba(59, 130, 246, 0.4);
 }
 
 * {
@@ -45,62 +44,22 @@ body {
   background: var(--bg);
 }
 
-/* ---- 7세그먼트 개별 숫자 슬롯 (완벽한 정렬) ---- */
-.digit-row {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1;
-}
-
-.digit-slot {
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 0.64em;
-  height: 1em;
-}
-
-.digit-slot .bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--digit-bg-color);
+/* ---- 7세그먼트 디지털 시간 숫자 선명 표시 ---- */
+.time-digit {
   font-family: 'DSEG7-Classic', 'Orbitron', 'Share Tech Mono', monospace;
-  user-select: none;
-  pointer-events: none;
-  text-align: center;
-}
-
-.digit-slot .fg {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: var(--accent-color);
-  font-family: 'DSEG7-Classic', 'Orbitron', 'Share Tech Mono', monospace;
-  text-shadow: 0 0 14px var(--accent-glow), 0 0 28px var(--accent-glow);
-  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-shadow: 0 0 16px var(--accent-glow), 0 0 32px var(--accent-glow);
+  letter-spacing: 0.02em;
 }
 
 /* 시간 / 분 크기 */
-.hours-row,
-.minutes-row {
-  font-size: clamp(5.2rem, 25vw, 16.5rem);
+.hours,
+.minutes {
+  font-size: clamp(5.5rem, 28vw, 17.5rem);
   margin-bottom: 0.1rem;
-}
-
-.hours-row .digit-slot,
-.minutes-row .digit-slot {
-  height: 0.9em;
 }
 
 /* 초 & AM/PM 행 */
@@ -113,23 +72,23 @@ body {
   margin-bottom: 0.8rem;
 }
 
-.seconds-row {
-  font-size: clamp(2.2rem, 10vw, 5.2rem);
+.seconds {
+  font-size: clamp(2.4rem, 11vw, 5.5rem);
 }
 
 .ampm {
-  font-size: clamp(2rem, 9vw, 4.6rem);
+  font-size: clamp(2.2rem, 10vw, 5rem);
   font-family: 'Share Tech Mono', 'Orbitron', 'DSEG7-Classic', monospace;
   font-weight: 700;
   color: var(--accent-color);
-  text-shadow: 0 0 12px var(--accent-glow);
+  text-shadow: 0 0 14px var(--accent-glow);
   letter-spacing: 0.05em;
   line-height: 1;
 }
 
 /* ---- 날짜 & 요일 (초시계급 대형 사이즈) ---- */
 .date {
-  font-size: clamp(2.2rem, 8vw, 5.2rem);
+  font-size: clamp(2.2rem, 8.5vw, 5.2rem);
   font-family: 'Share Tech Mono', 'Orbitron', 'Noto Sans KR', sans-serif;
   font-weight: 700;
   color: var(--accent-color);
@@ -141,7 +100,7 @@ body {
 }
 
 .day {
-  font-size: clamp(2.6rem, 9.5vw, 6.2rem);
+  font-size: clamp(2.6rem, 10vw, 6.2rem);
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   color: var(--accent-color);
