@@ -28,13 +28,11 @@
   /* ---- 시간 표시 ---- */
   function formatTime(d) {
     let h = d.getHours();
-    let prefix = "";
     if (!is24h) {
-      prefix = h < 12 ? "오전 " : "오후 ";
       h = h % 12 || 12;
     }
     const m = String(d.getMinutes()).padStart(2, "0");
-    return prefix + h + ":" + m;
+    return h + ":" + m;
   }
 
   function render() {
