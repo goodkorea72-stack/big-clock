@@ -1,4 +1,4 @@
-const CACHE_NAME = "big-clock-v3";
+const CACHE_NAME = "big-clock-v4";
 const ASSETS = [
   "./",
   "./index.html",

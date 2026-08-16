@@ -17,30 +17,21 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dseg@0.4.6/css/dseg.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main id="clock" class="clock">
     <!-- 시 (Hours) -->
-    <div class="digit-box hours-box">
-      <span class="digit-bg" aria-hidden="true">88</span>
-      <span id="hours" class="digit-fg">4</span>
-    </div>
+    <div id="hours-container" class="digit-row hours-row"></div>
 
     <!-- 분 (Minutes) -->
-    <div class="digit-box minutes-box">
-      <span class="digit-bg" aria-hidden="true">88</span>
-      <span id="minutes" class="digit-fg">30</span>
-    </div>
+    <div id="minutes-container" class="digit-row minutes-row"></div>
 
     <!-- 초 & AM/PM (Seconds & AM/PM) -->
     <div class="sec-ampm-row">
-      <div class="digit-box seconds-box">
-        <span class="digit-bg" aria-hidden="true">88</span>
-        <span id="seconds" class="digit-fg">38</span>
-      </div>
+      <div id="seconds-container" class="digit-row seconds-row"></div>
       <span id="ampm" class="ampm">PM</span>
     </div>
 

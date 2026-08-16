@@ -2,9 +2,9 @@
 
 (function () {
   const $ = (id) => document.getElementById(id);
-  const hoursEl = $("hours");
-  const minutesEl = $("minutes");
-  const secondsEl = $("seconds");
+  const hoursContainer = $("hours-container");
+  const minutesContainer = $("minutes-container");
+  const secondsContainer = $("seconds-container");
   const ampmEl = $("ampm");
   const dateEl = $("date");
   const dayEl = $("day");
@@ -28,8 +28,8 @@
 
   const DAY_NAMES = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 
-  let is24h = false; // 기본 12시간 모드 (이미지와 동일)
-  let colorIndex = 0; // 기본 일렉트릭 블루 (이미지와 동일)
+  let is24h = false;
+  let colorIndex = 0;
 
   try {
     const savedFormat = localStorage.getItem(STORAGE_FORMAT);
@@ -42,9 +42,7 @@
         colorIndex = idx;
       }
     }
-  } catch (e) {
-    /* localStorage 사용 불가 시 기본값 유지 */
-  }
+  } catch (e) {}
 
   /* ---- 색상 적용 ---- */
   function applyColorTheme() {
@@ -52,6 +50,39 @@
     document.documentElement.style.setProperty("--accent-color", theme.main);
     document.documentElement.style.setProperty("--accent-glow", theme.glow);
     document.documentElement.style.setProperty("--digit-bg-color", theme.bg);
+  }
+
+  /* ---- 숫자 슬롯 동적 렌더링 (폰트 오프셋 방지) ---- */
+  function renderDigitSlots(container, text) {
+    const slots = container.querySelectorAll(".digit-slot");
+    if (slots.length === text.length) {
+      for (let i = 0; i < text.length; i++) {
+        const fg = slots[i].querySelector(".fg");
+        if (fg && fg.textContent !== text[i]) {
+          fg.textContent = text[i];
+        }
+      }
+      return;
+    }
+
+    container.innerHTML = "";
+    for (let i = 0; i < text.length; i++) {
+      const slot = document.createElement("div");
+      slot.className = "digit-slot";
+
+      const bg = document.createElement("span");
+      bg.className = "bg";
+      bg.setAttribute("aria-hidden", "true");
+      bg.textContent = "8";
+
+      const fg = document.createElement("span");
+      fg.className = "fg";
+      fg.textContent = text[i];
+
+      slot.appendChild(bg);
+      slot.appendChild(fg);
+      container.appendChild(slot);
+    }
   }
 
   /* ---- 시간 및 날짜 표시 ---- */
@@ -71,9 +102,9 @@
       ampmEl.style.display = "inline-block";
     }
 
-    hoursEl.textContent = displayHours;
-    minutesEl.textContent = String(now.getMinutes()).padStart(2, "0");
-    secondsEl.textContent = String(now.getSeconds()).padStart(2, "0");
+    renderDigitSlots(hoursContainer, displayHours);
+    renderDigitSlots(minutesContainer, String(now.getMinutes()).padStart(2, "0"));
+    renderDigitSlots(secondsContainer, String(now.getSeconds()).padStart(2, "0"));
 
     // 날짜: "8월 16, 2026"
     const month = now.getMonth() + 1;
