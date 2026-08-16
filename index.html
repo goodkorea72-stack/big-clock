@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0d0f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="시계">
+  <meta name="description" content="큰 글씨 스마트폰 시계 — 시간, 요일, 날짜">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>큰 글씨 시계</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="clock" class="clock">
+    <div id="time" class="time" aria-live="polite">--:--</div>
+    <div id="date" class="date"></div>
+    <div id="day" class="day"></div>
+  </main>
+
+  <div id="controls" class="controls" aria-hidden="true">
+    <button id="btn-fullscreen" class="ctrl-btn" type="button" aria-label="전체 화면">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+        <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+      </svg>
+    </button>
+    <button id="btn-format" class="ctrl-btn" type="button" aria-label="12/24시간 전환">24h</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
